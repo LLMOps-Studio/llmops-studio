@@ -1,0 +1,12 @@
+projects:
+  - name: finwise-scribe
+    description: "Financial document analysis and summary project."
+    base_model: "finwise_scribe_v1.gguf"
+    prompt_source: "local:/prompts/finwise/"
+    dataset_source: "local:/data/finwise/golden_dataset.json"
+
+  - name: real-estate-ai
+    description: "Real estate property matching and price estimation."
+    base_model: "qwen2.5:7b"
+    prompt_source: "local:/prompts/real_estate/"
+    dataset_source: "local:/data/real_estate/properties.json"

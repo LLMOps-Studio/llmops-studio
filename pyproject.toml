@@ -1,0 +1,49 @@
+[project]
+name = "llmops-studio"
+version = "0.1.0"
+description = "LLMOps Studio"
+requires-python = ">=3.11"
+authors = [
+  { name = "Muhammet Ali Varlık", email = "iletisim.muhammetalivarlik@gmail.com" }
+]
+
+dependencies = [
+  "python-dotenv",
+  "fastapi",
+  "uvicorn",
+  "pydantic>=2.0.0",
+  "pyyaml",
+  "mlflow>=2.15,<3",
+  "llmops-common",
+  "promptops-lab",
+  "memory-lab",
+  "rag-benchmark-lab",
+  "review-lab",
+  "schema-lab",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+  "black",
+  "mypy"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.black]
+line-length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
