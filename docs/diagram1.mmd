@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant DAG as DAG Engine
+    participant RAG as RAGConfigBenchmarkNode
+    participant Scorer as FaithfulnessRelevanceScorerNode
+
+    DAG->>RAG: execute(inputs)
+    activate RAG
+    Note over RAG: Runs vector retrieval & LLM generation
+    RAG-->>DAG: { ..., "context": "chunk1, chunk2", "response": "LLM output text" }
+    deactivate RAG
+
+    DAG->>Scorer: execute({ "context_source": "node_RAG", "response_source": "node_RAG" })
+    activate Scorer
+    Note over Scorer: Resolves upstream refs
+    Scorer->>DAG: Fetch state["node_RAG"]["context"]
+    Scorer->>DAG: Fetch state["node_RAG"]["response"]
+    Note over Scorer: Computes LLM-as-a-judge metrics
+    Scorer-->>DAG: { "faithfulness_score": 0.85, "relevance_score": 0.92 }
+    deactivate Scorer
