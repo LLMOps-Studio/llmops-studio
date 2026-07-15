@@ -11,6 +11,13 @@
 
 It started as the dedicated telemetry/testing harness for the *Finwise Scribe* thesis (an edge-hardware neuro-symbolic market-forecasting engine) and evolved into a general-purpose "Grafana for personal LLM projects": a plug-and-play evaluation layer meant to be reused across future projects, not a one-off script per repo.
 
+
+## 📸 Studio Interface
+
+A look at the drag-and-drop React Flow canvas used to build, configure, and execute LLM evaluation pipelines:
+
+![LLMOps Studio Canvas](docs/workflow-studio.png "LLMOps Studio DAG Execution Interface")
+
 ---
 
 ## Table of Contents
