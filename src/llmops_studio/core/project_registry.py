@@ -1,3 +1,4 @@
+import os
 import yaml
 from pathlib import Path
 from typing import Dict, Any
@@ -7,16 +8,28 @@ class ProjectRegistry:
     Loads and manages different LLM projects (e.g., Finwise, Real Estate AI).
     Provides context to the DAGEngine so nodes know which datasets and models to use.
     """
-    
-    def __init__(self, config_path: str = "projects.yaml"):
-        self.config_path = Path(config_path)
+
+    def __init__(self, config_path: str = None):
+        # PROJECTS_CONFIG_PATH lets the Docker image (or any deployment) point
+        # this at wherever projects.yaml actually landed, instead of assuming
+        # it's always sitting next to the current working directory.
+        self.config_path = Path(
+            config_path or os.getenv("PROJECTS_CONFIG_PATH", "projects.yaml")
+        )
         self.projects = self._load_projects()
 
     def _load_projects(self) -> Dict[str, Dict[str, Any]]:
         if not self.config_path.exists():
-            print(f"Warning: Project configuration not found at {self.config_path}")
-            return {}
-            
+            # This used to just warn-and-return-{} here, which is exactly why
+            # the Project Context dropdown could go silently empty in Docker
+            # (projects.yaml wasn't shipped into the image) with no visible
+            # error anywhere -- raise instead so a misconfigured deployment
+            # fails at startup, not as a mysteriously empty UI dropdown.
+            raise RuntimeError(
+                f"Project configuration not found at '{self.config_path.resolve()}'. "
+                f"Set PROJECTS_CONFIG_PATH or ensure projects.yaml is present at that path."
+            )
+
         try:
             with open(self.config_path, 'r', encoding='utf-8') as f:
                 data = yaml.safe_load(f)
