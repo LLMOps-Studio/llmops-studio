@@ -33,7 +33,6 @@ def get_nodes():
     """Returns the catalog of nodes available for the React Flow canvas."""
     return {"nodes": list(engine.node_registry.keys())}
 
-# 🟢 YENİ EKLENEN ENDPOINT: Ollama Model Keşfi
 @router.get("/models", summary="List available Ollama models")
 def get_models():
     """Fetches the list of locally available models directly from Ollama.
